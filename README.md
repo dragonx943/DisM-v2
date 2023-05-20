@@ -4,10 +4,10 @@ Code được làm lại từ bản gốc bởi TannerGabriel. Việt Hóa bởi
 
 Yêu cầu:
 1. Nếu là các thiết bị giả lập Linux (Android, IOS):
-* Cần tải và cài đặt môi trường giả lập:
+Cần tải và cài đặt môi trường giả lập:
 + Người dùng Android: Termux (Android 7+, Các máy Android 5, 6 cũng có thể dùng nếu biết chỉnh lại repo của Termux phiên bản cũ) hoặc là sử dụng UserLAnd (Android 5+)
 + Người dùng iPhone: iSH Shell (iOS 11.0+)
-* Cài đặt các gói phần mềm cần thiết:
+Cài đặt các gói phần mềm cần thiết:
 + Termux: Cần cài đặt Ubuntu hoặc Debian thông qua proot-distro. Sau đó cài đặt nodejs v16, ffmpeg, python, git.
 + UserLAnd: Thiết lập cài đặt Ubuntu hoặc Debian từ giao diện chính của app. Sau đó đăng nhập và cài đặt nodejs v16, ffmpeg, python, git.
 + iSH Shell: Mở app, cập nhật gói và cài đặt nodejs v16, ffmpeg, python, git.
