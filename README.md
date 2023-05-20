@@ -3,14 +3,10 @@ DisM-v2
 Code được làm lại từ bản gốc bởi TannerGabriel. Việt Hóa bởi dragonx943. Đang trong quá trình Việt Hóa các câu lệnh và tối ưu hóa trên các thiết bị giả lập Linux (Android, IOS), môi trường máy ảo (VMWare, VirtualBox, QEMU,...) và các máy có cấu hình yếu.
 
 Yêu cầu:
-1. Nếu là các thiết bị giả lập Linux (Android, IOS):
-Cần tải và cài đặt môi trường giả lập:
-+ Người dùng Android: Termux (Android 7+, Các máy Android 5, 6 cũng có thể dùng nếu biết chỉnh lại repo của Termux phiên bản cũ) hoặc là sử dụng UserLAnd (Android 5+)
-+ Người dùng iPhone: iSH Shell (iOS 11.0+)
-Cài đặt các gói phần mềm cần thiết:
-+ Termux: Cần cài đặt Ubuntu hoặc Debian thông qua proot-distro. Sau đó cài đặt nodejs v16, ffmpeg, python, git.
-+ UserLAnd: Thiết lập cài đặt Ubuntu hoặc Debian từ giao diện chính của app. Sau đó đăng nhập và cài đặt nodejs v16, ffmpeg, python, git.
-+ iSH Shell: Mở app, cập nhật gói và cài đặt nodejs v16, ffmpeg, python, git.
+1. Nếu là các thiết bị giả lập Linux (Android, IOS) thì cần tải và cài đặt:
++ Termux (Android 5+): Cần cài đặt Ubuntu hoặc Debian thông qua proot-distro. Sau đó cài đặt nodejs v16, ffmpeg, python, git.
++ UserLAnd (Android 5+): Thiết lập cài đặt Ubuntu hoặc Debian từ giao diện chính của app. Sau đó đăng nhập và cài đặt nodejs v16, ffmpeg, python, git.
++ iSH Shell (iOS 11.0+): Mở app, cập nhật gói và cài đặt nodejs v16, ffmpeg, python, git.
 2. Nếu là môi trường máy ảo hoặc các máy tính có cấu hình tùy chỉnh:
 - Hệ điều hành: Windows, Linux, MacOS,...
 - Phần mềm: git, nodejs v16, python, ffmpeg (thêm gói *nano* nếu là Linux để có thể chỉnh sửa file)
