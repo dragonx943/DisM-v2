@@ -1,7 +1,6 @@
 DisM-v2
 
-Code được làm lại từ bản gốc bởi TannerGabriel. Việt Hóa bởi dragonx943
-Đang trong quá trình Việt Hóa các câu lệnh và tối ưu hóa trên các thiết bị giả lập Linux (Android, IOS), môi trường máy ảo (VMWare, VirtualBox, QEMU,...) và các máy có cấu hình yếu.
+Code được làm lại từ bản gốc bởi TannerGabriel. Việt Hóa bởi dragonx943. Đang trong quá trình Việt Hóa các câu lệnh và tối ưu hóa trên các thiết bị giả lập Linux (Android, IOS), môi trường máy ảo (VMWare, VirtualBox, QEMU,...) và các máy có cấu hình yếu.
 
 Cách dùng:
 1. Cài đặt: *npm i*
