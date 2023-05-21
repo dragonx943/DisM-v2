@@ -1,13 +1,5 @@
-<<<<<<< HEAD
 {
   "extends": [
     "config:base", ":disableDependencyDashboard"
   ]
 }
-=======
-{
-  "extends": [
-    "config:base", ":disableDependencyDashboard"
-  ]
-}
->>>>>>> 434deaddbaf06720955f149c75b395609b7a7337

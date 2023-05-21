@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 version: '3.3'
 
 services:
@@ -7,14 +6,4 @@ services:
         context: ./
         dockerfile: Dockerfile
     container_name: discord-bot
-=======
-version: '3.3'
-
-services:
-  discord-bot:
-    build:
-        context: ./
-        dockerfile: Dockerfile
-    container_name: discord-bot
->>>>>>> 434deaddbaf06720955f149c75b395609b7a7337
     restart: always
