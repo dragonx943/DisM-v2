@@ -1,7 +1,7 @@
 {
-  "name": "@discordjs/opus",
+  "name": "DisM-v2",
   "version": "0.8.0",
-  "description": "S1mple Bot",
+  "description": "S1mple Discord Bot",
   "main": "index.js",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "prettier": "2.8.0",
-    "test": "node ."
+    "test": "node index.js"
   },
   "scripts": {
 
