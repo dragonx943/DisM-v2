@@ -27,7 +27,11 @@ Cách dùng:
 - Không dùng câu lệnh ```npm audit fix``` để đảm bảo các module không gặp lỗi đè lên nhau
 - Nếu module bị lỗi trong quá trình cài đặt, vui lòng kiểm tra đường truyền mạng và thử lại. Nếu vẫn có lỗi, vui lòng kiểm tra xem module có còn tồn tại không.
 2. Thiết lập
-- Nhập TOKEN Bot Discord của bạn vào file *test.env* rồi lưu lại với tên file mới là *.env* (Nếu bạn dùng các nền tảng khác như Replit hay Glitch để treo thì vui lòng tìm mục SECRET hoặc mục nào tương tự tùy vào từng nền tảng để ghi *DISCORD_TOKEN*)
+- Lấy TOKEN từ trang *https://discord.dev*, sau đó nhập dòng lệnh sau để nhập TOKEN vào Bot:
+```sh
+    echo "DISCORD_TOKEN=abc" > .env
+```
+Trong đó: abc - mã TOKEN bạn vừa lấy từ trang Dev của Discord. Đối với Web Replit thì tìm mục *Secrets* sau đó thêm ```DISCORD_TOKEN``` ở mục *New Secret* và điền TOKEN vào mục *Value*.
 - Mở file *config.json* và:
 + activityType: có các lựa chọn 0, 1, 2, 3 (Đang chơi, đang xem, đang nghe,...)
 + activity: Tên của hoạt động đó (VD: Đang chơi Genshin Impact,...)
