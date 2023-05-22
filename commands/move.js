@@ -30,14 +30,14 @@ module.exports = {
       interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
     ) {
       return void interaction.reply({
-        content: 'You are not in my voice channel!',
+        content: 'Bắt buộc: Bạn phải tham gia vào kênh thoại của Bot! | Mem64i: ❌',
         ephemeral: true,
       });
     }
 
     await interaction.deferReply();
     const queue = player.getQueue(interaction.guildId);
-    if (!queue || !queue.playing) return void interaction.followUp({content: '❌ | No music is being played!'});
+    if (!queue || !queue.playing) return void interaction.followUp({content: 'Không phát hiện nhạc trong hàng chờ! | Mem64i: ❌'});
     const queueNumbers = [interaction.options.getInteger('track') - 1, interaction.options.getInteger('position') - 1];
     if (queueNumbers[0] > queue.tracks.length || queueNumbers[1] > queue.tracks.length)
       return void interaction.followUp({content: '❌ | Track number greater than queue depth!'});

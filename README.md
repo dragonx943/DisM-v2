@@ -15,8 +15,16 @@ Chuẩn bị:
 - Mở Terminal (Linux, MacOS), Command Prompt (Windows) và gõ câu lệnh: *git clone https://github.com/dragonx943/DisM-v2.git* để tải code về máy.
 
 Cách dùng:
-1. Cài đặt: *npm i*
-- Không dùng câu lệnh *npm audit fix* để đảm bảo các module không gặp lỗi đè lên nhau
+1. Cài đặt:
+- Sử dụng câu lệnh sau để bắt đầu cài đặt:
+```sh
+    npm i
+```
+- Sau khi nhập *npm i*, tiếp tục nhập:
+```sh
+    npm i ffmpeg ffmpeg-static
+```
+- Không dùng câu lệnh ```npm audit fix``` để đảm bảo các module không gặp lỗi đè lên nhau
 - Nếu module bị lỗi trong quá trình cài đặt, vui lòng kiểm tra đường truyền mạng và thử lại. Nếu vẫn có lỗi, vui lòng kiểm tra xem module có còn tồn tại không.
 2. Thiết lập
 - Nhập TOKEN Bot Discord của bạn vào file *test.env* rồi lưu lại với tên file mới là *.env* (Nếu bạn dùng các nền tảng khác như Replit hay Glitch để treo thì vui lòng tìm mục SECRET hoặc mục nào tương tự tùy vào từng nền tảng để ghi *DISCORD_TOKEN*)
@@ -24,7 +32,8 @@ Cách dùng:
 + activityType: có các lựa chọn 0, 1, 2, 3 (Đang chơi, đang xem, đang nghe,...)
 + activity: Tên của hoạt động đó (VD: Đang chơi Genshin Impact,...)
 , sau đó lưu lại.
-3. Khởi chạy: *npm start* hoặc *node .*
+3. Khởi chạy: 
+- Sử dụng câu lệnh ```node .``` để bắt đầu chạy.
 
 Mục tiêu:
 1. Việt Hóa tiếp các câu lệnh chưa được Việt Hóa
