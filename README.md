@@ -22,7 +22,7 @@ Cách dùng:
 ```
 - Sau khi nhập *npm i*, tiếp tục nhập:
 ```sh
-    npm i ffmpeg ffmpeg-static
+    npm i ffmpeg ffmpeg-static node-opus opusscript
 ```
 - Không dùng câu lệnh ```npm audit fix``` để đảm bảo các module không gặp lỗi đè lên nhau
 - Nếu module bị lỗi trong quá trình cài đặt, vui lòng kiểm tra đường truyền mạng và thử lại. Nếu vẫn có lỗi, vui lòng kiểm tra xem module có còn tồn tại không.

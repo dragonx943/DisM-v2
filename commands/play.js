@@ -3,12 +3,12 @@ const {QueryType} = require('discord-player');
 
 module.exports = {
   name: 'play',
-  description: 'Play a song in your channel!',
+  description: 'Thêm 1 yêu cầu vào hàng chờ của Bot (khác với tiếp tục phát)',
   options: [
     {
       name: 'query',
       type: ApplicationCommandOptionType.String,
-      description: 'The song you want to play',
+      description: 'Gõ tên hoặc địa chỉ URL của bài vào đây',
       required: true,
     },
   ],
@@ -16,7 +16,7 @@ module.exports = {
     try {
       if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
         return void interaction.reply({
-          content: 'You are not in a voice channel!',
+          content: 'Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này | Mem64i: ❌',
           ephemeral: true,
         });
       }
@@ -26,7 +26,7 @@ module.exports = {
         interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
       ) {
         return void interaction.reply({
-          content: 'You are not in my voice channel!',
+          content: 'Lỗi: Bạn không ở cùng kênh thoại với Bot! | Mem64i: ❌',
           ephemeral: true,
         });
       }
@@ -41,7 +41,7 @@ module.exports = {
         })
         .catch(() => {});
       if (!searchResult || !searchResult.tracks.length)
-        return void interaction.followUp({content: 'No results were found!'});
+        return void interaction.followUp({content: 'Đã xảy ra lỗi: Không tìm thấy kết quả nào! Có thể lỗi là do máy chủ hoặc bộ nhớ lưu trữ! ❌'});
 
       const queue = await player.createQueue(interaction.guild, {
         ytdlOptions: {
@@ -60,19 +60,19 @@ module.exports = {
       } catch {
         void player.deleteQueue(interaction.guildId);
         return void interaction.followUp({
-          content: 'Could not join your voice channel!',
+          content: 'Lỗi: Không đủ quyền hoặc không thể truy cập kênh thoại mà bạn tham gia!',
         });
       }
 
       await interaction.followUp({
-        content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...`,
+        content: `**W**: Đang tải và phân tích dữ liệu ${searchResult.playlist ? 'playlist' : 'track'} của bạn... | Mem64i: ⏱`,
       });
       searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
       if (!queue.playing) await queue.play();
     } catch (error) {
       console.log(error);
       interaction.followUp({
-        content: 'There was an error trying to execute that command: ' + error.message,
+        content: 'Đã xảy ra lỗi khi thực thi lệnh này, bản log test thống kê lỗi: ' + error.message,
       });
     }
   },

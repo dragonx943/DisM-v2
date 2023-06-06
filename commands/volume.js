@@ -2,19 +2,19 @@ const {GuildMember, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
   name: 'volume',
-  description: 'Change the volume!',
+  description: 'Điều chỉnh âm lượng!',
   options: [
     {
       name: 'volume',
       type: ApplicationCommandOptionType.Integer,
-      description: 'Number between 0-200',
+      description: 'Gõ 1 giá trị bất kì từ 0% đến 200%',
       required: true,
     },
   ],
   async execute(interaction, player) {
     if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
       return void interaction.reply({
-        content: 'You are not in a voice channel!',
+        content: '**E**: Bạn không có mặt tại bất kì kênh thoại nào!',
         ephemeral: true,
       });
     }
@@ -24,7 +24,7 @@ module.exports = {
       interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
     ) {
       return void interaction.reply({
-        content: 'You are not in my voice channel!',
+        content: '**E**: Bạn không cùng kênh thoại với tôi, sad :((',
         ephemeral: true,
       });
     }
@@ -33,7 +33,7 @@ module.exports = {
     const queue = player.getQueue(interaction.guildId);
     if (!queue || !queue.playing)
       return void interaction.followUp({
-        content: '❌ | No music is being played!',
+        content: '**E**: Không có yêu cầu nào trong hàng chờ ngay lúc này!\n**W**: Vui lòng thêm yêu cầu vào hàng chờ để sử dụng lệnh!',
       });
 
     var volume = interaction.options.getInteger('volume');
@@ -42,7 +42,7 @@ module.exports = {
     const success = queue.setVolume(volume);
 
     return void interaction.followUp({
-      content: success ? `🔊 | Volume set to ${volume}!` : '❌ | Something went wrong!',
+      content: success ? `🔊: Đã chỉnh âm lượng thành ${volume}%` : '❌ | Có gì đó sai sai, đang fix bug!',
     });
   },
 };

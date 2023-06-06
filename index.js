@@ -5,20 +5,6 @@ const Discord = require('discord.js');
 const Client = require('./client/Client');
 const config = require('./config.json');
 const {Player} = require('discord-player');
-const http = require("http");
-
-const express = require('express')
-const app = express()
-const port = 3000
-
-app.get('/', (req, res) => {
-  res.send('OK, Code bởi TannerGabriel và được Việt Hóa và làm lại bởi dragonx943.')
-})
-
-app.listen(port, () => {
-  console.log(`OK, dự án đang được mở chạy ở cổng ${port} của mạng.`)
-});
-
 
 const { ActivityType } = require('discord.js');
 
@@ -60,7 +46,7 @@ player.on('connectionError', (queue, error) => {
 });
 
 player.on('trackStart', (queue, track) => {
-  queue.metadata.send(`Bắt đầu phát: **${track.title}** tại **${queue.connection.channel.name}** | Mem64i: ▶`);
+  queue.metadata.send(`▶  Bắt đầu phát: **${track.title}**\n📻  Phát tại: **${queue.connection.channel.name}**`);
 });
 
 player.on('trackAdd', (queue, track) => {
