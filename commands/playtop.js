@@ -3,12 +3,12 @@ const {QueryType} = require('discord-player');
 
 module.exports = {
   name: 'playtop',
-  description: 'Play a song before the next in your channel!',
+  description: 'Đặc biệt: Thêm 1 yêu cầu vào đầu danh sách hàng chờ!',
   options: [
     {
       name: 'query',
       type: ApplicationCommandOptionType.String,
-      description: 'The song you want to play',
+      description: 'Gõ tên hoặc địa chỉ URL của yêu cầu vào đây',
       required: true,
     },
   ],
@@ -16,7 +16,7 @@ module.exports = {
     try {
       if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
         return void interaction.reply({
-          content: 'You are not in a voice channel!',
+          content: 'Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này | Mem64i: ❌',
           ephemeral: true,
         });
       }
@@ -26,7 +26,7 @@ module.exports = {
         interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
       ) {
         return void interaction.reply({
-          content: 'You are not in my voice channel!',
+          content: 'Lỗi: Bạn không ở cùng kênh thoại với Bot! | Mem64i: ❌',
           ephemeral: true,
         });
       }
@@ -41,14 +41,16 @@ module.exports = {
         })
         .catch(() => {});
       if (!searchResult || !searchResult.tracks.length)
-        return void interaction.followUp({content: 'No results were found!'});
+        return void interaction.followUp({content: '**E**: Đã xảy ra lỗi ngoài ý muốn! | Mem64i: ❌\n**W**: Không thể tìm thấy kết quả nào khớp với dữ liệu này! Có thể lỗi do địa chỉ không hợp lệ, lỗi do máy chủ hoặc bộ nhớ lưu trữ...'});
 
       const queue = await player.createQueue(interaction.guild, {
         ytdlOptions: {
-        quality: "highest",
-        filter: "audioonly",
-        highWaterMark: 1 << 25,
-        dlChunkSize: 0,
+          quality: "highestaudio",
+          filter: "audioonly",
+          fmt: "mp3",
+          opusEncoded: true,
+          highWaterMark: 1 << 25,
+          dlChunkSize: 0,
       },
         metadata: interaction.channel,
       });
@@ -58,19 +60,19 @@ module.exports = {
       } catch {
         void player.deleteQueue(interaction.guildId);
         return void interaction.followUp({
-          content: 'Could not join your voice channel!',
+          content: '**Lỗi**: Không đủ quyền hoặc không thể truy cập kênh thoại mà bạn tham gia!',
         });
       }
 
       await interaction.followUp({
-        content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...`,
+        content: `**W**: Đang tải và phân tích dữ liệu ${searchResult.playlist ? 'playlist' : 'track'} của bạn... | Mem64i: ⏱`,
       });
       searchResult.playlist ? queue.insert(searchResult.tracks, 0) : queue.insert(searchResult.tracks[0], 0);
       if (!queue.playing) await queue.play();
     } catch (error) {
       console.log(error);
       interaction.followUp({
-        content: 'There was an error trying to execute that command: ' + error.message,
+        content: 'Đã xảy ra lỗi khi thực thi lệnh này, đây là bản log test thống kê lỗi: ' + error.message,
       });
     }
   },

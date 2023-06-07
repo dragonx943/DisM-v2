@@ -8,7 +8,7 @@ module.exports = {
     {
       name: 'query',
       type: ApplicationCommandOptionType.String,
-      description: 'Gõ tên hoặc địa chỉ URL của bài vào đây',
+      description: 'Gõ tên hoặc địa chỉ URL của yêu cầu vào đây',
       required: true,
     },
   ],
@@ -41,7 +41,7 @@ module.exports = {
         })
         .catch(() => {});
       if (!searchResult || !searchResult.tracks.length)
-        return void interaction.followUp({content: 'Đã xảy ra lỗi: Không tìm thấy kết quả nào! Có thể lỗi là do máy chủ hoặc bộ nhớ lưu trữ! ❌'});
+        return void interaction.followUp({content: '**E**: Đã xảy ra lỗi ngoài ý muốn! | Mem64i: ❌\n**W**: Không thể tìm thấy kết quả nào khớp với dữ liệu này! Có thể lỗi do địa chỉ không hợp lệ, lỗi do máy chủ hoặc bộ nhớ lưu trữ...'});
 
       const queue = await player.createQueue(interaction.guild, {
         ytdlOptions: {
@@ -72,7 +72,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       interaction.followUp({
-        content: 'Đã xảy ra lỗi khi thực thi lệnh này, bản log test thống kê lỗi: ' + error.message,
+        content: 'Đã xảy ra lỗi khi thực thi lệnh này, đây là bản log test thống kê lỗi: ' + error.message,
       });
     }
   },

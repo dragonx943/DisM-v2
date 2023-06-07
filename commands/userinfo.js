@@ -2,12 +2,12 @@ const {ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
   name: 'userinfo',
-  description: 'Get information about a user.',
+  description: 'Lấy thông tin từ 1 người dùng tại Discord',
   options: [
     {
       name: 'user',
       type: ApplicationCommandOptionType.User,
-      description: 'The user you want to get info about',
+      description: 'Hãy tag người mà bạn muốn tra cứu.',
       required: true,
     },
   ],
@@ -15,7 +15,7 @@ module.exports = {
     const user = interaction.options.getUser('user');
 
     interaction.reply({
-      content: `Name: ${user.username}, ID: ${user.id}, Avatar: ${user.displayAvatarURL({dynamic: true})}`,
+      content: `🕵️  Tên: ${user.username}\n🕶️  ID: ${user.id}\n📷  Địa chỉ URL của Avatar: ${user.displayAvatarURL({dynamic: true})}`,
       ephemeral: true,
     });
   },

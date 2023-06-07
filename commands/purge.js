@@ -1,11 +1,11 @@
 module.exports = {
   name: 'purge',
-  description: 'Delete the last messages in all chats.',
+  description: 'Xóa tin nhắn ở kênh chat nào đó.',
   options: [
     {
       name: 'num',
       type: 4, //'INTEGER' Type
-      description: 'The number of messages you want to delete. (max 100)',
+      description: 'Điền số lượng tin nhắn mà bạn muốn xóa (tối đa: 100)',
       required: true,
     },
   ],
@@ -14,7 +14,7 @@ module.exports = {
 
     if (!deleteCount || deleteCount < 2 || deleteCount > 100) {
       return void interaction.reply({
-        content: `Please provide a number between 2 and 100 for the number of messages to delete`,
+        content: `Làm ơn, hãy chọn số bất kì từ 2 đến 100 để tiếp tục lệnh xóa tin nhắn!`,
         ephemeral: true,
       });
     }
@@ -27,13 +27,13 @@ module.exports = {
       .bulkDelete(fetched)
       .then(() => {
         interaction.reply({
-          content: `Succesfully deleted messages`,
+          content: `**W** - **M**: Đã xóa tin nhắn thành công!`,
           ephemeral: true,
         });
       })
       .catch(error => {
         interaction.reply({
-          content: `Couldn't delete messages because of: ${error}`,
+          content: `Đã xảy ra lỗi khi thực thi lệnh này, đây là bản log test thống kê lỗi: ${error}`,
           ephemeral: true,
         });
       });

@@ -2,11 +2,11 @@ const {GuildMember} = require('discord.js');
 
 module.exports = {
   name: 'stop',
-  description: 'Stop all songs in the queue!',
+  description: 'Dừng tất cả các yêu cầu hiện tại, đồng thời cũng xóa sạch hàng chờ.',
   async execute(interaction, player) {
     if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
       return void interaction.reply({
-        content: 'You are not in a voice channel!',
+        content: '**E**: Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
         ephemeral: true,
       });
     }
@@ -16,7 +16,7 @@ module.exports = {
       interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
     ) {
       return void interaction.reply({
-        content: 'You are not in my voice channel!',
+        content: '**E**: Bạn không ở cùng kênh thoại với Bot! | Mem64i: ❌',
         ephemeral: true,
       });
     }
@@ -25,9 +25,9 @@ module.exports = {
     const queue = player.getQueue(interaction.guildId);
     if (!queue || !queue.playing)
       return void interaction.followUp({
-        content: '❌ | No music is being played!',
+        content: '**E**: Không có yêu cầu trong hàng chờ | Mem64i: ❌',
       });
     queue.destroy();
-    return void interaction.followUp({content: '🛑 | Stopped the player!'});
+    return void interaction.followUp({content: '**W**: Đã dừng phát yêu cầu và tiến hành xóa hàng chờ!\n**M**: Đã dừng trình phát! | Mem64i: 🛑'});
   },
 };

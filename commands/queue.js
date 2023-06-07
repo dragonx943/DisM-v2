@@ -3,13 +3,13 @@ const {GuildMember} = require('discord.js');
 module.exports = {
 
     name: 'queue',
-    description: 'View the queue of current songs!',
+    description: 'Xem danh sách hàng chờ của Bot.',
 
     async execute (interaction, player) {
 
         if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
             return void interaction.reply({
-              content: 'You are not in a voice channel!',
+              content: '**E**: Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
               ephemeral: true,
             });
           }
@@ -19,7 +19,7 @@ module.exports = {
             interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
           ) {
             return void interaction.reply({
-              content: 'You are not in my voice channel!',
+              content: '**E**: Bạn không ở cùng kênh thoại với Bot!',
               ephemeral: true,
             });
           }
@@ -29,14 +29,14 @@ module.exports = {
               return void interaction.reply({
                 embeds: [
                   {
-                    title: 'Now Playing',
-                    description: trimString(`The Current song playing is 🎶 | **${queue.current.title}**! \n 🎶 | ${queue}! `, 4095),
+                    title: 'Danh sách hàng chờ hiện tại:',
+                    description: trimString(`🎶  Hiện đang phát: **${queue.current.title}**\n🎶  **Các yêu cầu kế tiếp -** ${queue} `, 4095),
                   }
                 ]
               })
           } else {
             return void interaction.reply({
-              content: 'There is no song in the queue!'
+              content: '**E**: Không có yêu cầu nào trong hàng chờ | Mem64i: ❌'
             })
           }
     }
