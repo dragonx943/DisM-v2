@@ -6,6 +6,16 @@ const Client = require('./client/Client');
 const config = require('./config.json');
 const {Player} = require('discord-player');
 
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Đã mở cổng thành công, hãy sao chép địa chỉ của trang Web này đến các trang dịch vụ hỗ trợ như Uptimerobot để treo Bot 24/24 (Có thể mất phí).\nSource Code đi ăn trộm, Việt Hóa bởi dragonx943');
+});
+
+app.listen(3000, () => console.log('[W] - Pip Pip! Đã tiến hành mở cổng 3000 dành cho các trang treo.\n[M] - Nếu bạn đang dùng máy trạm để treo Bot Discord, vui lòng bỏ qua lời nhắn này!'));
+
 const { ActivityType } = require('discord.js');
 
 const client = new Client();
@@ -66,7 +76,7 @@ player.on('queueEnd', queue => {
 });
 
 client.once('ready', async () => {
-  console.log('Nạp đạn đầy đủ! Đã sẵn sàng chờ lệnh!');
+  console.log('[W + M] - Nạp đạn đầy đủ! Đã sẵn sàng chờ lệnh!');
 });
 
 client.on('ready', function() {
