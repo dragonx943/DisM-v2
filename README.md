@@ -12,18 +12,20 @@ Yêu cầu:
 - Phần mềm: git, nodejs v16, python, ffmpeg (thêm gói *nano* nếu là Linux để có thể chỉnh sửa file)
 
 Chuẩn bị:
-- Mở Terminal (Linux, MacOS), Command Prompt (Windows) và gõ câu lệnh: *git clone https://github.com/dragonx943/DisM-v2.git* để tải code về máy.
-
+- Mở Terminal (Linux, MacOS), Command Prompt (Windows) và gõ câu lệnh sau để tải code về máy:
+    ```sh
+    git clone https://github.com/dragonx943/DisM-v2.git*
+    ```
 Cách dùng:
 1. Cài đặt:
 - Sử dụng câu lệnh sau để bắt đầu cài đặt:
-```sh
+    ```sh
     npm i
-```
+    ```
 - Sau khi nhập *npm i*, tiếp tục nhập:
-```sh
+    ```sh
     npm i ffmpeg ffmpeg-static node-opus opusscript
-```
+    ```
 - Không dùng câu lệnh ```npm audit fix``` để đảm bảo các module không gặp lỗi đè lên nhau
 - Nếu module bị lỗi trong quá trình cài đặt, vui lòng kiểm tra đường truyền mạng và thử lại. Nếu vẫn có lỗi, vui lòng kiểm tra xem module có còn tồn tại không.
 2. Thiết lập
@@ -37,7 +39,10 @@ Trong đó: abc - mã TOKEN bạn vừa lấy từ trang Dev của Discord. Đ�
 + activity: Tên của hoạt động đó (VD: Đang chơi Genshin Impact,...)
 , sau đó lưu lại.
 3. Khởi chạy: 
-- Sử dụng câu lệnh ```node .``` để bắt đầu chạy.
+- Sử dụng câu lệnh sau để bắt đầu chạy:
+    ```sh
+    node .
+    ```
 
 Mục tiêu:
 1. Việt Hóa tiếp các câu lệnh chưa được Việt Hóa
