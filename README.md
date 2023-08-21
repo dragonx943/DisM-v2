@@ -14,7 +14,7 @@ Yêu cầu:
 Chuẩn bị:
 - Mở Terminal (Linux, MacOS), Command Prompt (Windows) và gõ câu lệnh sau để tải code về máy:
     ```sh
-    git clone https://github.com/dragonx943/DisM-v2.git*
+    git clone https://github.com/dragonx943/DisM-v2
     ```
 Cách dùng:
 1. Cài đặt:
