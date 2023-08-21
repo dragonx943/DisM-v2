@@ -1,48 +1,38 @@
 const {GuildMember} = require('discord.js');
+const {useQueue} = require("discord-player");
+const {isInVoiceChannel} = require("../utils/voicechannel");
 
 module.exports = {
-  name: 'shuffle',
-  description: 'Bốc thăm...À nhầm, xáo trộn danh sách hàng chờ!',
-  async execute(interaction, player) {
-    if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
-      return void interaction.reply({
-        content: 'Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
-        ephemeral: true,
-      });
-    }
+    name: 'shuffle',
+    description: 'Random hàng chờ của Bot!',
+    async execute(interaction) {
+        const inVoiceChannel = isInVoiceChannel(interaction)
+        if (!inVoiceChannel) {
+            return
+        }
 
-    if (
-      interaction.guild.members.me.voice.channelId &&
-      interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
-    ) {
-      return void interaction.reply({
-        content: '**E**: Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
-        ephemeral: true,
-      });
-    }
-
-    await interaction.deferReply();
-    const queue = player.getQueue(interaction.guildId);
-    if (!queue || !queue.playing) return void interaction.followUp({content: '**E**: Không có yêu cầu trong hàng chờ | Mem64i: ❌'});
-    try {
-      queue.shuffle();
-      trimString = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
-      return void interaction.followUp({
-        embeds: [
-          {
-            title: 'Danh sách hàng chờ hiện tại (sau khi xáo trộn):',
-            description: trimString(
-              `🎶  Hiện đang phát: **${queue.current.title}**\n🎶  **Các yêu cầu kế tiếp -** ${queue}! `,
-              4095,
-            ),
-          },
-        ],
-      });
-    } catch (error) {
-      console.log(error);
-      return void interaction.followUp({
-        content: 'Lỗi: Đã xảy ra sự cố! | Mem64i: ❌',
-      });
-    }
-  },
+        await interaction.deferReply();
+        const queue = useQueue(interaction.guild.id)
+        if (!queue || !queue.currentTrack) return void interaction.followUp({content: '❌ Hàng chờ đang trống!'});
+        try {
+            queue.tracks.shuffle();
+            const trimString = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
+            return void interaction.followUp({
+                embeds: [
+                    {
+                        title: 'Hàng chờ',
+                        description: trimString(
+                            `Yêu cầu đang phát ngay lúc này là 🎶 **${queue.currentTrack.title}**! \n 🎶 ${queue}! `,
+                            4095,
+                        ),
+                    },
+                ],
+            });
+        } catch (error) {
+            console.log(error);
+            return void interaction.followUp({
+                content: '❌ Có gì đó sai sai, báo lại cho Admin ngay!',
+            });
+        }
+    },
 };

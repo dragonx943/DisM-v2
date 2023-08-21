@@ -6,17 +6,7 @@ const Client = require('./client/Client');
 const config = require('./config.json');
 const {Player} = require('discord-player');
 
-const express = require('express');
-
-const app = express();
-
-app.get('/', (req, res) => {
-  res.send('Đã mở cổng thành công, hãy sao chép địa chỉ của trang Web này đến các trang dịch vụ hỗ trợ như Uptimerobot để treo Bot 24/24 (Có thể mất phí).\nSource Code đi ăn trộm, Việt Hóa bởi dragonx943');
-});
-
-app.listen(3000, () => console.log('[W] - Pip Pip! Đã tiến hành mở cổng 3000 dành cho các trang treo.\n[M] - Nếu bạn đang dùng máy trạm để treo Bot Discord, vui lòng bỏ qua lời nhắn này!'));
-
-const { ActivityType } = require('discord.js');
+const {ActivityType} = require('discord.js');
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -24,16 +14,19 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.name, command);
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
 }
 
 console.log(client.commands);
 
 const player = new Player(client);
 
-player.on('connectionCreate', (queue) => {
-    queue.connection.voiceConnection.on('stateChange', (oldState, newState) => {
+player.extractors.loadDefault().then(r => console.log('Extractors loaded successfully'))
+
+// Still needs to be refactored for 0.6
+/*player.events.on('connection', (queue) => {
+    queue.connection.connec.voiceConnection.on('stateChange', (oldState, newState) => {
       const oldNetworking = Reflect.get(oldState, 'networking');
       const newNetworking = Reflect.get(newState, 'networking');
 
@@ -45,87 +38,98 @@ player.on('connectionCreate', (queue) => {
       oldNetworking?.off('stateChange', networkStateChangeHandler);
       newNetworking?.on('stateChange', networkStateChangeHandler);
     });
+});*/
+
+player.events.on('audioTrackAdd', (queue, song) => {
+    queue.metadata.channel.send(`🎶 **${song.title}** đã được thêm vào hàng chờ!`);
 });
 
-player.on('error', (queue, error) => {
-  console.log(`[${queue.guild.name}] Đã xảy ra lỗi trong hàng chờ: ${error.message}`);
+player.events.on('playerStart', (queue, track) => {
+    queue.metadata.channel.send(`▶ Bắt đầu phát: **${track.title}**!`);
 });
 
-player.on('connectionError', (queue, error) => {
-  console.log(`[${queue.guild.name}] Đã xảy ra lỗi từ đường truyền kết nối: ${error.message}`);
+player.events.on('audioTracksAdd', (queue, track) => {
+    queue.metadata.channel.send(`🎶 Yêu cầu đã được xử lí!`);
 });
 
-player.on('trackStart', (queue, track) => {
-  queue.metadata.send(`▶  Bắt đầu phát: **${track.title}**\n📻  Phát tại: **${queue.connection.channel.name}**`);
+player.events.on('disconnect', queue => {
+    queue.metadata.channel.send('❌ Bot đã bị ai đó đá ra khỏi kênh Voice, xóa sạch hàng chờ!');
 });
 
-player.on('trackAdd', (queue, track) => {
-  queue.metadata.send(`Đã thêm: **${track.title}** vào hàng chờ của Bot | Mem64i: +1 🎶`);
+player.events.on('emptyChannel', queue => {
+    queue.metadata.channel.send('❌ Không có ai ở kênh Voice, Bot đang thoát...');
 });
 
-player.on('botDisconnect', queue => {
-  queue.metadata.send('Do Bot đã đột ngột bị kick ra khỏi kênh đàm thoại, bắt đầu tiến hành thực thi lệnh xóa toàn bộ hàng chờ!');
+player.events.on('emptyQueue', queue => {
+    queue.metadata.channel.send('✅ Yêu cầu đã được phát, kết thúc!');
 });
 
-player.on('channelEmpty', queue => {
-  queue.metadata.send('Không có ai xuất hiện ở kênh đàm thoại, bắt đầu thực thi lệnh rời khỏi kênh...');
+player.events.on('error', (queue, error) => {
+    console.log(`[${queue.guild.name}] Lỗi trong khi kết nối: ${error.message}`);
 });
 
-player.on('queueEnd', queue => {
-  queue.metadata.send('Đã kết thúc trình phát, tiến hành thực thi lệnh rời khỏi kênh thoại và dọn bộ nhớ! | Mem64i: ✅');
+// For debugging
+/*player.on('debug', async (message) => {
+    console.log(`General player debug event: ${message}`);
 });
 
-client.once('ready', async () => {
-  console.log('[W + M] - Nạp đạn đầy đủ! Đã sẵn sàng chờ lệnh!');
+player.events.on('debug', async (queue, message) => {
+    console.log(`Player debug event: ${message}`);
 });
 
-client.on('ready', function() {
-  client.user.setPresence({
-    activities: [{ name: config.activity, type: Number(config.activityType) }],
-    status: Discord.PresenceUpdateStatus.Online,
-  });
+player.events.on('playerError', (queue, error) => {
+    console.log(`Player error event: ${error.message}`);
+    console.log(error);
+});*/
+
+client.on('ready', function () {
+    console.log('Ready!');
+    client.user.presence.set({
+        activities: [{name: config.activity, type: Number(config.activityType)}],
+        status: Discord.Status.Ready
+    })
 });
 
 client.once('reconnecting', () => {
-  console.log('Đang cố gắng kết nối lại với trái đất!');
+    console.log('Reconnecting!');
 });
 
 client.once('disconnect', () => {
-  console.log('Pip Pip! Đã ngắt kết nối với trái đất!');
+    console.log('Disconnect!');
 });
 
 client.on('messageCreate', async message => {
-  if (message.author.bot || !message.guild) return;
-  if (!client.application?.owner) await client.application?.fetch();
+    if (message.author.bot || !message.guild) return;
+    if (!client.application?.owner) await client.application?.fetch();
 
-  if (message.content === '!deploy' && message.author.id === client.application?.owner?.id) {
-    await message.guild.commands
-      .set(client.commands)
-      .then(() => {
-        message.reply('Đã triển khai dán câu lệnh thiết lập sẵn lên máy chủ này!');
-      })
-      .catch(err => {
-        message.reply('Không thể triển khai dán lệnh! Hãy đảm bảo Bot đã được cấp quyền: application.commands !!!');
-        console.error(err);
-      });
-  }
+    if (message.content === '!deploy' && message.author.id === client.application?.owner?.id) {
+        await message.guild.commands
+            .set(client.commands)
+            .then(() => {
+                message.reply('Đã dán câu lệnh thiết lập sẵn!');
+            })
+            .catch(err => {
+                message.reply('Bot bị thiếu quyền application.commands!');
+                console.error(err);
+            });
+    }
 });
 
 client.on('interactionCreate', async interaction => {
-  const command = client.commands.get(interaction.commandName.toLowerCase());
+    const command = client.commands.get(interaction.commandName.toLowerCase());
 
-  try {
-    if (interaction.commandName == 'ban' || interaction.commandName == 'userinfo') {
-      command.execute(interaction, client);
-    } else {
-      command.execute(interaction, player);
+    try {
+        if (interaction.commandName == 'ban' || interaction.commandName == 'userinfo') {
+            command.execute(interaction, client);
+        } else {
+            command.execute(interaction);
+        }
+    } catch (error) {
+        console.error(error);
+        await interaction.followUp({
+            content: 'Đã có lỗi xảy ra khi thực thi câu lệnh!',
+        });
     }
-  } catch (error) {
-    console.error(error);
-    interaction.followUp({
-      content: 'Đã xảy ra lỗi khi Bot đang cố gắng thực thi câu lệnh đó!\nHãy đảm bảo Bot đã được cấp quyền đầy đủ. Nếu vẫn xảy ra lỗi, vui lòng liên hệ Admin để được giải quyết!',
-    });
-  }
 });
 
 client.login(process.env.DISCORD_TOKEN);

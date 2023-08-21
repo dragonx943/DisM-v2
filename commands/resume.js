@@ -1,35 +1,25 @@
 const {GuildMember} = require('discord.js');
+const {useQueue} = require("discord-player");
+const {isInVoiceChannel} = require("../utils/voicechannel");
 
 module.exports = {
-  name: 'resume',
-  description: 'Tiếp tục phát yêu cầu đã tạm dừng trước đó!',
-  async execute(interaction, player) {
-    if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
-      return void interaction.reply({
-        content: '**E**: Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
-        ephemeral: true,
-      });
-    }
+    name: 'resume',
+    description: 'Tiếp tục phát sau khi đã tạm dừng',
+    async execute(interaction) {
+        const inVoiceChannel = isInVoiceChannel(interaction)
+        if (!inVoiceChannel) {
+            return
+        }
 
-    if (
-      interaction.guild.members.me.voice.channelId &&
-      interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
-    ) {
-      return void interaction.reply({
-        content: '**E**: Bạn không ở cùng kênh thoại với Bot! | Mem64i: ❌',
-        ephemeral: true,
-      });
-    }
-
-    await interaction.deferReply();
-    const queue = player.getQueue(interaction.guildId);
-    if (!queue || !queue.playing)
-      return void interaction.followUp({
-        content: '**E**: Không có yêu cầu trong hàng chờ | Mem64i: ❌',
-      });
-    const success = queue.setPaused(false);
-    return void interaction.followUp({
-      content: success ? '**W**: Tiếp tục phát yêu cầu đã tạm dừng trong trình phát... | Mem64i: ▶' : '**Lỗi**: Có gì đó sai sai, bãi bỏ lệnh này!',
-    });
-  },
+        await interaction.deferReply();
+        const queue = useQueue(interaction.guild.id)
+        if (!queue || !queue.currentTrack)
+            return void interaction.followUp({
+                content: '❌ Hàng chờ rỗng, không có yêu cầu nào!',
+            });
+        const success = queue.node.resume()
+        return void interaction.followUp({
+            content: success ? '▶ Tiến hành tiếp tục phát!' : '❌ Có gì đó sai sai, đã xảy ra lỗi!',
+        });
+    },
 };

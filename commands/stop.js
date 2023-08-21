@@ -1,33 +1,23 @@
 const {GuildMember} = require('discord.js');
+const {useQueue} = require("discord-player");
+const {isInVoiceChannel} = require("../utils/voicechannel");
 
 module.exports = {
-  name: 'stop',
-  description: 'Dừng tất cả các yêu cầu hiện tại, đồng thời cũng xóa sạch hàng chờ.',
-  async execute(interaction, player) {
-    if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
-      return void interaction.reply({
-        content: '**E**: Bạn hiện không có mặt ở bất kì kênh thoại nào trong Server này!',
-        ephemeral: true,
-      });
-    }
+    name: 'stop',
+    description: 'Dừng và xóa tất cả bài có trong hàng chờ!',
+    async execute(interaction) {
+        const inVoiceChannel = isInVoiceChannel(interaction)
+        if (!inVoiceChannel) {
+            return
+        }
 
-    if (
-      interaction.guild.members.me.voice.channelId &&
-      interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId
-    ) {
-      return void interaction.reply({
-        content: '**E**: Bạn không ở cùng kênh thoại với Bot! | Mem64i: ❌',
-        ephemeral: true,
-      });
-    }
-
-    await interaction.deferReply();
-    const queue = player.getQueue(interaction.guildId);
-    if (!queue || !queue.playing)
-      return void interaction.followUp({
-        content: '**E**: Không có yêu cầu trong hàng chờ | Mem64i: ❌',
-      });
-    queue.destroy();
-    return void interaction.followUp({content: '**W**: Đã dừng phát yêu cầu và tiến hành xóa hàng chờ!\n**M**: Đã dừng trình phát! | Mem64i: 🛑'});
-  },
+        await interaction.deferReply();
+        const queue = useQueue(interaction.guild.id)
+        if (!queue || !queue.currentTrack)
+            return void interaction.followUp({
+                content: '❌ Hàng chờ rỗng, không có bài nào ở đây cả!',
+            });
+        queue.node.stop()
+        return void interaction.followUp({content: '🛑 Đã dừng trình phát nhạc của Bot!'});
+    },
 };
