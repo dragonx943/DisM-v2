@@ -1,6 +1,7 @@
 const {GuildMember, ApplicationCommandOptionType} = require('discord.js');
 const {QueryType, useMainPlayer} = require('discord-player');
 const {isInVoiceChannel} = require("../utils/voicechannel");
+const iTag = 30;
 
 module.exports = {
     name: 'play',
@@ -36,17 +37,17 @@ module.exports = {
                             client: interaction.guild?.members.me,
                             requestedBy: interaction.user.username
                         },
-                        leaveOnEmptyCooldown: 300000,
+                        leaveOnEmptyCooldown: 180,
                         leaveOnEmpty: true,
                         leaveOnEnd: false,
                         bufferingTimeout: 0,
-                        volume: 75,
-                        quality: "highestaudio",
-				        filter: "audioonly",
+                        volume: 50,
+                        quality: "highest",
+			filter: "iTag",
                         fmt: "mp3",
                         opusEncoded: true,
                         highWaterMark: 1 << 25,
-				        dlChunkSize: 0,
+			dlChunkSize: 0,
                         // defaultFFmpegFilters: ['lofi', 'bassboost', 'normalizer']
                     }
                 });
